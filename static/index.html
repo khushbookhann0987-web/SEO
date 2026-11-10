@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI SEO Content Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="hero">
+  <p class="eyebrow">AI SEO analyzer</p>
+  <h1>Find out what is holding your page back in search</h1>
+  <p>Paste your page copy to check headings, readability and keyword use, and get a meta title, meta description and clear fixes.</p>
+</header>
+
+<main>
+  <form id="form" class="card">
+    <label for="content">Page content</label>
+    <textarea id="content" rows="10" maxlength="8000" placeholder="Paste your page text here. Headings can be written as # Heading, ## Subheading, or as <h1>/<h2> tags."></textarea>
+    <p class="hint"><span id="chars">0</span> / 8000 characters</p>
+    <div class="row">
+      <div><label for="kw">Target keyword (optional)</label>
+        <input id="kw" maxlength="80" placeholder="e.g. bridal makeup in Lahore"></div>
+      <div><label for="type">Page type</label>
+        <select id="type"><option>Service page</option><option>Home page</option><option>Blog post</option><option>Product page</option><option>Landing page</option></select></div>
+      <button id="go" class="primary" type="submit">Analyze page</button>
+    </div>
+    <p id="error" class="error" role="alert" hidden></p>
+  </form>
+  <section id="result" hidden></section>
+</main>
+<script src="/static/script.js"></script>
+</body>
+</html>
