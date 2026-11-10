@@ -14,6 +14,7 @@ load_dotenv()
 API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 MODEL = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+SITE_URL = os.getenv("RENDER_EXTERNAL_URL", "http://127.0.0.1:5000")
 MAX_CONTENT = 8000
 PAGE_TYPES = ["Service page", "Home page", "Blog post", "Product page", "Landing page"]
 STOP = set("""a about above after again all also am an and any are as at be because been before being below between both but by
@@ -152,11 +153,11 @@ Rules:
 
 def ask(user):
     if not API_KEY:
-        raise ApiError("Server is missing OPENROUTER_API_KEY. Check your .env file.", 500)
+        raise ApiError("Server is missing OPENROUTER_API_KEY. Check your environment variables.", 500)
     payload = {"model": MODEL, "messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}],
                "max_tokens": 1800, "temperature": 0.5}
     headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json",
-               "HTTP-Referer": "http://127.0.0.1:5000", "X-Title": "AI SEO Content Analyzer"}
+               "HTTP-Referer": SITE_URL, "X-Title": "AI SEO Content Analyzer"}
     try:
         r = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=60)
         r.raise_for_status()
@@ -229,4 +230,6 @@ def analyze_route():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    # Local development only. On Render, gunicorn starts the app.
+    port = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=os.getenv("FLASK_DEBUG") == "1")
